@@ -117,7 +117,7 @@ O relatório em LaTeX descreve:
 ## 👤 Autor
 
 Igor Cassimiro Assunção  
-Ciência da Computação — UNICAP
+Ciencia de Dados e Analytics - PUC - RIO 
 
 ---
 
