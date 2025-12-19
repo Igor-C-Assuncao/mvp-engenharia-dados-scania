@@ -40,7 +40,7 @@ O problema de negócio central deste MVP é, portanto:
 
 O objetivo geral deste MVP é:
 
-> **Construir um pipeline de dados em nuvem, utilizando a plataforma Databricks Community Edition, para ingestão, modelagem, carga e análise do SCANIA Component X Dataset, com foco em manutenção preditiva de caminhões pesados. O pipeline deverá transformar os dados brutos em uma camada analítica estruturada (esquema estrela) que permita analisar padrões de degradação do componente X, perfis de risco por especificação de veículo e comportamento operacional ao longo do tempo.**
+> **Construir um pipeline de dados em nuvem, utilizando a plataforma Databricks Free Edition, para ingestão, modelagem, carga e análise do SCANIA Component X Dataset, com foco em manutenção preditiva de caminhões pesados. O pipeline deverá transformar os dados brutos em uma camada analítica estruturada (esquema estrela) que permita analisar padrões de degradação do componente X, perfis de risco por especificação de veículo e comportamento operacional ao longo do tempo.**
 
 ---
 
@@ -78,8 +78,6 @@ A partir do objetivo geral, este trabalho se propõe a responder, na medida do p
      - e padrões nas leituras operacionais?
    - Esses perfis podem ser usados como base para políticas de monitoramento e agendamento de manutenção mais inteligentes do que a manutenção puramente corretiva?
 
-> Observação importante:  
-> Não é obrigatório que todas as perguntas sejam completamente respondidas. Caso alguma delas não possa ser respondida com o nível de detalhe desejado, essa limitação será discutida na seção de autoavaliação, mantendo este documento de objetivo **intacto**, conforme orientação da disciplina.
 
 ---
 
@@ -96,20 +94,3 @@ Essas características tornam o dataset adequado para demonstrar, em um único M
 
 ---
 
-## 6. Escopo e limitações
-
-Este MVP terá o seguinte escopo:
-
-- **Incluído no escopo**
-  - Construção de pipeline em nuvem (Databricks CE) com camadas Bronze, Silver e Gold;
-  - Modelagem de dados analítica em **esquema estrela**;
-  - Construção de um **Catálogo de Dados**, incluindo descrição e domínios observados das variáveis (mesmo quando anonimizadas);
-  - Análise de qualidade dos dados;
-  - Análises exploratórias e agregadas para responder, na medida do possível, às perguntas de negócio formuladas.
-
-- **Fora do escopo deste MVP (pode ser sugerido como trabalho futuro)**
-  - Desenvolvimento de modelos preditivos complexos (por exemplo, modelos de machine learning ou deep learning para previsão de falha);
-  - Integração com dados externos (web scraping, dados de custo, dados de clima, etc.);
-  - Implementação de arquiteturas de streaming em tempo real.
-
-Essas limitações não diminuem o valor do MVP, mas reforçam seu foco: **construir e documentar um pipeline de dados robusto e bem modelado, capaz de gerar insights claros sobre degradação e risco de falha do componente X.**
