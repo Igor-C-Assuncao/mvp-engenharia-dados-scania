@@ -1,0 +1,1773 @@
+{
+  "datasets": [
+    {
+      "name": "b936e301",
+      "displayName": "Histograma / Boxplot do tempo observado",
+      "queryLines": [
+        "SELECT length_of_study_time_step\r\n",
+        "FROM gold_fato_tempo_ate_evento\r\n",
+        "WHERE   length_of_study_time_step IS NOT NULL;"
+      ]
+    },
+    {
+      "name": "411e3f73",
+      "displayName": "Proporção de Reparo (sem reparo no período)",
+      "queryLines": [
+        "SELECT\r\n",
+        "  in_study_repair,\r\n",
+        "  COUNT(*) AS qtd_veiculos,\r\n",
+        "  ROUND(100.0 * COUNT(*) / SUM(COUNT(*)) OVER (), 2) AS perc\r\n",
+        "FROM gold_fato_tempo_ate_evento\r\n",
+        "GROUP BY in_study_repair\r\n",
+        "ORDER BY in_study_repair;"
+      ]
+    },
+    {
+      "name": "dc63b2a7",
+      "displayName": "Taxa de reparo por especificação spec_0",
+      "queryLines": [
+        "SELECT\r\n",
+        "  spec_0,\r\n",
+        "  COUNT(*) AS qtd_veiculos,\r\n",
+        "  AVG(CASE WHEN in_study_repair = 1 THEN 1 ELSE 0 END) AS taxa_reparo\r\n",
+        "FROM gold_dim_veiculo\r\n",
+        "GROUP BY spec_0\r\n",
+        "ORDER BY taxa_reparo DESC;"
+      ]
+    },
+    {
+      "name": "3e9025a0",
+      "displayName": "Taxa de reparo por especificação spec_1",
+      "queryLines": [
+        "SELECT\r\n",
+        "  spec_1,\r\n",
+        "  COUNT(*) AS qtd_veiculos,\r\n",
+        "  AVG(CASE WHEN in_study_repair = 1 THEN 1 ELSE 0 END) AS taxa_reparo\r\n",
+        "FROM gold_dim_veiculo\r\n",
+        "GROUP BY spec_1\r\n",
+        "ORDER BY taxa_reparo DESC;"
+      ]
+    },
+    {
+      "name": "33f9eaaf",
+      "displayName": "Taxa de reparo por especificação spec_2",
+      "queryLines": [
+        "SELECT\r\n",
+        "  spec_2,\r\n",
+        "  COUNT(*) AS qtd_veiculos,\r\n",
+        "  AVG(CASE WHEN in_study_repair = 1 THEN 1 ELSE 0 END) AS taxa_reparo\r\n",
+        "FROM gold_dim_veiculo\r\n",
+        "GROUP BY spec_2\r\n",
+        "ORDER BY taxa_reparo DESC;"
+      ]
+    },
+    {
+      "name": "63267b1b",
+      "displayName": "Taxa de reparo por especificação spec_3",
+      "queryLines": [
+        "SELECT\r\n",
+        "  spec_3,\r\n",
+        "  COUNT(*) AS qtd_veiculos,\r\n",
+        "  AVG(CASE WHEN in_study_repair = 1 THEN 1 ELSE 0 END) AS taxa_reparo\r\n",
+        "FROM gold_dim_veiculo\r\n",
+        "GROUP BY spec_3\r\n",
+        "ORDER BY taxa_reparo DESC;"
+      ]
+    },
+    {
+      "name": "9d058771",
+      "displayName": "Tempo mediano por especificação spec_0",
+      "queryLines": [
+        "SELECT\r\n",
+        "  spec_0,\r\n",
+        "  percentile_approx(length_of_study_time_step, 0.5) AS mediana_tempo\r\n",
+        "FROM gold_dim_veiculo\r\n",
+        "WHERE length_of_study_time_step IS NOT NULL\r\n",
+        "GROUP BY spec_0\r\n",
+        "ORDER BY mediana_tempo ASC;"
+      ]
+    },
+    {
+      "name": "995c97f9",
+      "displayName": "Tempo mediano por especificação spec_1",
+      "queryLines": [
+        "SELECT\r\n",
+        "  spec_1,\r\n",
+        "  percentile_approx(length_of_study_time_step, 0.5) AS mediana_tempo\r\n",
+        "FROM gold_dim_veiculo\r\n",
+        "WHERE length_of_study_time_step IS NOT NULL\r\n",
+        "GROUP BY spec_1\r\n",
+        "ORDER BY mediana_tempo ASC;"
+      ]
+    },
+    {
+      "name": "fe19dd2c",
+      "displayName": "Tempo mediano por especificação spec_2",
+      "queryLines": [
+        "SELECT\r\n",
+        "  spec_2,\r\n",
+        "  percentile_approx(length_of_study_time_step, 0.5) AS mediana_tempo\r\n",
+        "FROM gold_dim_veiculo\r\n",
+        "WHERE length_of_study_time_step IS NOT NULL\r\n",
+        "GROUP BY spec_2\r\n",
+        "ORDER BY mediana_tempo ASC;"
+      ]
+    },
+    {
+      "name": "f8b1d715",
+      "displayName": "mediana do tempo observado: spec_1 vs spec_2",
+      "queryLines": [
+        "SELECT\r\n",
+        "  spec_1,\r\n",
+        "  spec_2,\r\n",
+        "  percentile_approx(length_of_study_time_step, 0.5) AS mediana_tempo\r\n",
+        "FROM gold_dim_veiculo\r\n",
+        "WHERE length_of_study_time_step IS NOT NULL\r\n",
+        "GROUP BY spec_1, Spec_2\r\n",
+        "ORDER BY spec_1, spec_2;"
+      ]
+    },
+    {
+      "name": "5dcba538",
+      "displayName": "Evolução temporal de uma feature",
+      "queryLines": [
+        "SELECT\r\n",
+        "  t.faixa_time_step,\r\n",
+        "  AVG(f.`171_0`) AS media_171_0\r\n",
+        "FROM gold_fato_snapshot f\r\n",
+        "JOIN gold_dim_tempo t ON f.time_step = t.time_step\r\n",
+        "WHERE f.`171_0` IS NOT NULL\r\n",
+        "GROUP BY t.faixa_time_step\r\n",
+        "ORDER BY t.faixa_time_step;"
+      ]
+    },
+    {
+      "name": "075f7eea",
+      "displayName": "Distribuição das classes de proximidade (0–4)",
+      "queryLines": [
+        "SELECT\r\n",
+        "  dataset_split,\r\n",
+        "  class_label,\r\n",
+        "  COUNT(*) AS qtd\r\n",
+        "FROM gold_fato_snapshot\r\n",
+        "WHERE dataset_split IN ('validation', 'test')\r\n",
+        "GROUP BY dataset_split, class_label\r\n",
+        "ORDER BY dataset_split, class_label;"
+      ]
+    },
+    {
+      "name": "8253753a",
+      "displayName": "Perfil de risco por especificação",
+      "queryLines": [
+        "SELECT\r\n",
+        "  spec_0,\r\n",
+        "  spec_1,\r\n",
+        "  spec_2,\r\n",
+        "  spec_3,\r\n",
+        "  spec_4,\r\n",
+        "  spec_5,\r\n",
+        "  spec_6,\r\n",
+        "  spec_7,\r\n",
+        "  COUNT(*) AS qtd_veiculos,\r\n",
+        "  AVG(CASE WHEN in_study_repair = 1 THEN 1 ELSE 0 END) AS taxa_reparo,\r\n",
+        "  percentile_approx(length_of_study_time_step, 0.5) AS mediana_tempo\r\n",
+        "FROM gold_dim_veiculo\r\n",
+        "GROUP BY spec_0, spec_1, spec_2, spec_3, spec_4, spec_5, spec_6, spec_7\r\n",
+        "ORDER BY taxa_reparo DESC, mediana_tempo ASC;"
+      ]
+    },
+    {
+      "name": "ad86524a",
+      "displayName": "Perfil de risco por especificação qtd veiculos >1 1",
+      "queryLines": [
+        "SELECT\r\n",
+        "  spec_0,\r\n",
+        "  spec_1,\r\n",
+        "  spec_2,\r\n",
+        "  spec_3,\r\n",
+        "  spec_4,\r\n",
+        "  spec_5,\r\n",
+        "  spec_6,\r\n",
+        "  spec_7,\r\n",
+        "  COUNT(*) AS qtd_veiculos,\r\n",
+        "  AVG(CASE WHEN in_study_repair = 1 THEN 1 ELSE 0 END) AS taxa_reparo,\r\n",
+        "  percentile_approx(length_of_study_time_step, 0.5) AS mediana_tempo\r\n",
+        "FROM gold_dim_veiculo\r\n",
+        "GROUP BY spec_0, spec_1, spec_2, spec_3, spec_4, spec_5, spec_6, spec_7\r\n",
+        "HAVING COUNT(*) > 10\r\n",
+        "ORDER BY taxa_reparo DESC, mediana_tempo ASC;"
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "name": "a80cdce1",
+      "displayName": "main Dashboard",
+      "layout": [
+        {
+          "widget": {
+            "name": "53c86457",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "b936e301",
+                  "fields": [
+                    {
+                      "name": "bin(length_of_study_time_step, binWidth=50)",
+                      "expression": "BIN_FLOOR(`length_of_study_time_step`, 50)"
+                    },
+                    {
+                      "name": "count(*)",
+                      "expression": "COUNT(`*`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "histogram",
+              "encodings": {
+                "x": {
+                  "fieldName": "bin(length_of_study_time_step, binWidth=50)",
+                  "displayName": "Tempo Observado",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "y": {
+                  "fieldName": "count(*)",
+                  "displayName": "Quantidade",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "frame": {
+                "title": "Distribuição do tempo observado (TTE)",
+                "showTitle": true
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 3,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "896aa5dc",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "411e3f73",
+                  "fields": [
+                    {
+                      "name": "sum(qtd_veiculos)",
+                      "expression": "SUM(`qtd_veiculos`)"
+                    },
+                    {
+                      "name": "in_study_repair",
+                      "expression": "`in_study_repair`"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "pie",
+              "encodings": {
+                "angle": {
+                  "fieldName": "sum(qtd_veiculos)",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Qtd. de Veiculos"
+                },
+                "color": {
+                  "fieldName": "in_study_repair",
+                  "displayName": "Ocorreu Reparo",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "frame": {
+                "title": "Proporção de veículos sem reparo registrado (no período observado) ",
+                "showTitle": true
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 0,
+            "width": 3,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "12f48cd3",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "dc63b2a7",
+                  "fields": [
+                    {
+                      "name": "spec_0",
+                      "expression": "`spec_0`"
+                    },
+                    {
+                      "name": "taxa_reparo",
+                      "expression": "`taxa_reparo`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "spec_0",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "y-reversed"
+                    }
+                  }
+                },
+                "y": {
+                  "fieldName": "taxa_reparo",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "frame": {
+                "title": "Taxa de Reparo por Especificação",
+                "showTitle": true
+              },
+              "mark": {
+                "colors": [
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 2
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 2
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 3
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 4
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 5
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 6
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 7
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 8
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 9
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 10
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 6,
+            "width": 3,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "5c26bb61",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "3e9025a0",
+                  "fields": [
+                    {
+                      "name": "spec_1",
+                      "expression": "`spec_1`"
+                    },
+                    {
+                      "name": "taxa_reparo",
+                      "expression": "`taxa_reparo`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "spec_1",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "y-reversed"
+                    }
+                  }
+                },
+                "y": {
+                  "fieldName": "taxa_reparo",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "frame": {
+                "title": "Taxa de Reparo por Especificação ",
+                "showTitle": true
+              },
+              "mark": {
+                "colors": [
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 2
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 2
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 3
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 4
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 5
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 6
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 7
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 8
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 9
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 10
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 6,
+            "width": 3,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "720e384a",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "33f9eaaf",
+                  "fields": [
+                    {
+                      "name": "spec_2",
+                      "expression": "`spec_2`"
+                    },
+                    {
+                      "name": "taxa_reparo",
+                      "expression": "`taxa_reparo`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "spec_2",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "y-reversed"
+                    }
+                  }
+                },
+                "y": {
+                  "fieldName": "taxa_reparo",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "frame": {
+                "title": "Taxa de Reparo por Especificação",
+                "showTitle": true
+              },
+              "mark": {
+                "colors": [
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 2
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 2
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 3
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 4
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 5
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 6
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 7
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 8
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 9
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 10
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 12,
+            "width": 3,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "532c3bdf",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "63267b1b",
+                  "fields": [
+                    {
+                      "name": "spec_3",
+                      "expression": "`spec_3`"
+                    },
+                    {
+                      "name": "taxa_reparo",
+                      "expression": "`taxa_reparo`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "spec_3",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "y-reversed"
+                    }
+                  }
+                },
+                "y": {
+                  "fieldName": "taxa_reparo",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "frame": {
+                "title": "Taxa de Reparo por Especificação",
+                "showTitle": true
+              },
+              "mark": {
+                "colors": [
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 2
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 2
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 3
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 4
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 5
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 6
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 7
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 8
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 9
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 10
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 12,
+            "width": 3,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "986fafc7",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "9d058771",
+                  "fields": [
+                    {
+                      "name": "spec_0",
+                      "expression": "`spec_0`"
+                    },
+                    {
+                      "name": "mediana_tempo",
+                      "expression": "`mediana_tempo`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "spec_0",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "mediana_tempo",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 18,
+            "width": 3,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "2b86b759",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "f8b1d715",
+                  "fields": [
+                    {
+                      "name": "mediana_tempo",
+                      "expression": "`mediana_tempo`"
+                    },
+                    {
+                      "name": "spec_1",
+                      "expression": "`spec_1`"
+                    },
+                    {
+                      "name": "spec_2",
+                      "expression": "`spec_2`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "heatmap",
+              "encodings": {
+                "x": {
+                  "fieldName": "spec_1",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "spec_2",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "color": {
+                  "fieldName": "mediana_tempo",
+                  "displayName": "median temp",
+                  "scale": {
+                    "type": "quantitative",
+                    "colorRamp": {
+                      "mode": "scheme",
+                      "scheme": "redblue"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 18,
+            "width": 3,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "f89ba146",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "5dcba538",
+                  "fields": [
+                    {
+                      "name": "faixa_time_step",
+                      "expression": "`faixa_time_step`"
+                    },
+                    {
+                      "name": "media_171_0",
+                      "expression": "`media_171_0`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "faixa_time_step",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "custom-order",
+                      "orderedValues": [
+                        "0-24",
+                        "24-48",
+                        "48-72",
+                        ">72"
+                      ]
+                    }
+                  }
+                },
+                "y": {
+                  "fieldName": "media_171_0",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "label": {
+                  "show": false
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Evolução temporal sa feature 171_0"
+              },
+              "mark": {
+                "colors": [
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 3
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 2
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 3
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 4
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 5
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 6
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 7
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 8
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 9
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 10
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 24,
+            "width": 3,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "b413ec1c",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "075f7eea",
+                  "fields": [
+                    {
+                      "name": "dataset_split",
+                      "expression": "`dataset_split`"
+                    },
+                    {
+                      "name": "class_label",
+                      "expression": "`class_label`"
+                    },
+                    {
+                      "name": "qtd",
+                      "expression": "`qtd`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "class_label",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "qtd",
+                  "displayName": "Quantidade",
+                  "scale": {
+                    "type": "quantitative",
+                    "fn": {
+                      "type": "symlog"
+                    }
+                  }
+                },
+                "color": {
+                  "fieldName": "dataset_split",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "frame": {
+                "title": "Distribuição das classes por split (log) ",
+                "showTitle": true
+              },
+              "mark": {
+                "layout": "stack"
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 24,
+            "width": 3,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "8bd6e7d6",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "8253753a",
+                  "fields": [
+                    {
+                      "name": "spec_0",
+                      "expression": "`spec_0`"
+                    },
+                    {
+                      "name": "spec_1",
+                      "expression": "`spec_1`"
+                    },
+                    {
+                      "name": "spec_2",
+                      "expression": "`spec_2`"
+                    },
+                    {
+                      "name": "spec_3",
+                      "expression": "`spec_3`"
+                    },
+                    {
+                      "name": "spec_4",
+                      "expression": "`spec_4`"
+                    },
+                    {
+                      "name": "spec_5",
+                      "expression": "`spec_5`"
+                    },
+                    {
+                      "name": "spec_6",
+                      "expression": "`spec_6`"
+                    },
+                    {
+                      "name": "spec_7",
+                      "expression": "`spec_7`"
+                    },
+                    {
+                      "name": "qtd_veiculos",
+                      "expression": "`qtd_veiculos`"
+                    },
+                    {
+                      "name": "taxa_reparo",
+                      "expression": "`taxa_reparo`"
+                    },
+                    {
+                      "name": "mediana_tempo",
+                      "expression": "`mediana_tempo`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 1,
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "spec_0",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "string",
+                    "displayAs": "string",
+                    "visible": true,
+                    "order": 100000,
+                    "title": "spec_0",
+                    "allowSearch": false,
+                    "alignContent": "left",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  },
+                  {
+                    "fieldName": "spec_1",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "string",
+                    "displayAs": "string",
+                    "visible": true,
+                    "order": 100001,
+                    "title": "spec_1",
+                    "allowSearch": false,
+                    "alignContent": "left",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  },
+                  {
+                    "fieldName": "spec_2",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "string",
+                    "displayAs": "string",
+                    "visible": true,
+                    "order": 100002,
+                    "title": "spec_2",
+                    "allowSearch": false,
+                    "alignContent": "left",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  },
+                  {
+                    "fieldName": "spec_3",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "string",
+                    "displayAs": "string",
+                    "visible": true,
+                    "order": 100003,
+                    "title": "spec_3",
+                    "allowSearch": false,
+                    "alignContent": "left",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  },
+                  {
+                    "fieldName": "spec_4",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "string",
+                    "displayAs": "string",
+                    "visible": true,
+                    "order": 100004,
+                    "title": "spec_4",
+                    "allowSearch": false,
+                    "alignContent": "left",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  },
+                  {
+                    "fieldName": "spec_5",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "string",
+                    "displayAs": "string",
+                    "visible": true,
+                    "order": 100005,
+                    "title": "spec_5",
+                    "allowSearch": false,
+                    "alignContent": "left",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  },
+                  {
+                    "fieldName": "spec_6",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "string",
+                    "displayAs": "string",
+                    "visible": true,
+                    "order": 100006,
+                    "title": "spec_6",
+                    "allowSearch": false,
+                    "alignContent": "left",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  },
+                  {
+                    "fieldName": "spec_7",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "string",
+                    "displayAs": "string",
+                    "visible": true,
+                    "order": 100007,
+                    "title": "spec_7",
+                    "allowSearch": false,
+                    "alignContent": "left",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  },
+                  {
+                    "fieldName": "qtd_veiculos",
+                    "numberFormat": "0",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "integer",
+                    "displayAs": "number",
+                    "visible": true,
+                    "order": 100008,
+                    "title": "qtd_veiculos",
+                    "allowSearch": false,
+                    "alignContent": "right",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  },
+                  {
+                    "fieldName": "taxa_reparo",
+                    "numberFormat": "0.00",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "float",
+                    "displayAs": "number",
+                    "visible": true,
+                    "order": 100009,
+                    "title": "taxa_reparo",
+                    "allowSearch": false,
+                    "alignContent": "right",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  },
+                  {
+                    "fieldName": "mediana_tempo",
+                    "numberFormat": "0",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "integer",
+                    "displayAs": "number",
+                    "visible": true,
+                    "order": 100010,
+                    "title": "mediana_tempo",
+                    "allowSearch": false,
+                    "alignContent": "right",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  }
+                ]
+              },
+              "invisibleColumns": [],
+              "allowHTMLByDefault": false,
+              "itemsPerPage": 25,
+              "paginationSize": "default",
+              "condensed": true,
+              "withRowNumber": false,
+              "frame": {
+                "showTitle": true,
+                "title": "Perfil de risco por combinaçao de specs"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 30,
+            "width": 6,
+            "height": 7
+          }
+        },
+        {
+          "widget": {
+            "name": "9d0d8ca5",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "ad86524a",
+                  "fields": [
+                    {
+                      "name": "spec_0",
+                      "expression": "`spec_0`"
+                    },
+                    {
+                      "name": "spec_1",
+                      "expression": "`spec_1`"
+                    },
+                    {
+                      "name": "spec_2",
+                      "expression": "`spec_2`"
+                    },
+                    {
+                      "name": "spec_3",
+                      "expression": "`spec_3`"
+                    },
+                    {
+                      "name": "spec_4",
+                      "expression": "`spec_4`"
+                    },
+                    {
+                      "name": "spec_5",
+                      "expression": "`spec_5`"
+                    },
+                    {
+                      "name": "spec_6",
+                      "expression": "`spec_6`"
+                    },
+                    {
+                      "name": "spec_7",
+                      "expression": "`spec_7`"
+                    },
+                    {
+                      "name": "qtd_veiculos",
+                      "expression": "`qtd_veiculos`"
+                    },
+                    {
+                      "name": "taxa_reparo",
+                      "expression": "`taxa_reparo`"
+                    },
+                    {
+                      "name": "mediana_tempo",
+                      "expression": "`mediana_tempo`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 1,
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "spec_0",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "string",
+                    "displayAs": "string",
+                    "visible": true,
+                    "order": 100000,
+                    "title": "spec_0",
+                    "allowSearch": false,
+                    "alignContent": "left",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  },
+                  {
+                    "fieldName": "spec_1",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "string",
+                    "displayAs": "string",
+                    "visible": true,
+                    "order": 100001,
+                    "title": "spec_1",
+                    "allowSearch": false,
+                    "alignContent": "left",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  },
+                  {
+                    "fieldName": "spec_2",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "string",
+                    "displayAs": "string",
+                    "visible": true,
+                    "order": 100002,
+                    "title": "spec_2",
+                    "allowSearch": false,
+                    "alignContent": "left",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  },
+                  {
+                    "fieldName": "spec_3",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "string",
+                    "displayAs": "string",
+                    "visible": true,
+                    "order": 100003,
+                    "title": "spec_3",
+                    "allowSearch": false,
+                    "alignContent": "left",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  },
+                  {
+                    "fieldName": "spec_4",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "string",
+                    "displayAs": "string",
+                    "visible": true,
+                    "order": 100004,
+                    "title": "spec_4",
+                    "allowSearch": false,
+                    "alignContent": "left",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  },
+                  {
+                    "fieldName": "spec_5",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "string",
+                    "displayAs": "string",
+                    "visible": true,
+                    "order": 100005,
+                    "title": "spec_5",
+                    "allowSearch": false,
+                    "alignContent": "left",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  },
+                  {
+                    "fieldName": "spec_6",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "string",
+                    "displayAs": "string",
+                    "visible": true,
+                    "order": 100006,
+                    "title": "spec_6",
+                    "allowSearch": false,
+                    "alignContent": "left",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  },
+                  {
+                    "fieldName": "spec_7",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "string",
+                    "displayAs": "string",
+                    "visible": true,
+                    "order": 100007,
+                    "title": "spec_7",
+                    "allowSearch": false,
+                    "alignContent": "left",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  },
+                  {
+                    "fieldName": "qtd_veiculos",
+                    "numberFormat": "0",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "integer",
+                    "displayAs": "number",
+                    "visible": true,
+                    "order": 100008,
+                    "title": "qtd_veiculos",
+                    "allowSearch": false,
+                    "alignContent": "right",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  },
+                  {
+                    "fieldName": "taxa_reparo",
+                    "numberFormat": "0.00",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "float",
+                    "displayAs": "number",
+                    "visible": true,
+                    "order": 100009,
+                    "title": "taxa_reparo",
+                    "allowSearch": false,
+                    "alignContent": "right",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  },
+                  {
+                    "fieldName": "mediana_tempo",
+                    "numberFormat": "0",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "integer",
+                    "displayAs": "number",
+                    "visible": true,
+                    "order": 100010,
+                    "title": "mediana_tempo",
+                    "allowSearch": false,
+                    "alignContent": "right",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  }
+                ]
+              },
+              "invisibleColumns": [],
+              "allowHTMLByDefault": false,
+              "itemsPerPage": 25,
+              "paginationSize": "default",
+              "condensed": true,
+              "withRowNumber": false,
+              "frame": {
+                "showTitle": true,
+                "title": "Perfil de risco por combinaçao de specs qtd de veiculos maior que 10"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 37,
+            "width": 6,
+            "height": 6
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "widgetHeaderAlignment": "ALIGNMENT_UNSPECIFIED"
+    },
+    "applyModeEnabled": false
+  }
+}
