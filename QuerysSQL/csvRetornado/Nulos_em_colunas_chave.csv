@@ -1,0 +1,4 @@
+dataset_split,nulos_vehicle_id,nulos_time_step,nulos_split,nulos_class_label,total_linhas
+test,0,0,0,0,198140
+train,0,0,0,1122452,1122452
+validation,0,0,0,0,196227
